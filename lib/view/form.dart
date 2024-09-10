@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:form_flutter/models/user_model.dart';
 import 'package:form_flutter/view/showUserScreen.dart';
 
-enum Gender { male, female }
-
 class FormScreen extends StatefulWidget {
+  const FormScreen ({super.key});
+
   @override
   _FormScreenState createState() => _FormScreenState();
 }
+
+
 
 class _FormScreenState extends State<FormScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
-  
-  Gender? _selectedGender;
+
+  bool _isMale = false;
+  bool _isFemale = false;
+  Gender generoDefinido = Gender.masculino; 
+
   final List<UserModel> users = [];
 
   void clearText() {
@@ -23,19 +28,20 @@ class _FormScreenState extends State<FormScreen> {
     emailController.clear();
     phoneController.clear();
     addressController.clear();
-
   }
 
   void saveInfo() {
-    setState(() {
+    
       users.add(UserModel(
         name: nameController.text,
         email: emailController.text,
         phone: int.tryParse(phoneController.text) ?? 0,
         adress: addressController.text,
-        gender: _selectedGender == Gender.male ? 'Male' : 'Female',
+        genero: generoDefinido,
       ));
-    });
+      print(users.toString());
+      print(users.length);
+    
   }
 
   @override
@@ -99,29 +105,31 @@ class _FormScreenState extends State<FormScreen> {
                   style: TextStyle(fontSize: 20),
                 ),
               ),
-              ListTile(
-                title: const Text('Male'),
-                leading: Radio<Gender>(
-                  value: Gender.male,
-                  groupValue: _selectedGender,
-                  onChanged: (Gender? value) {
-                    setState(() {
-                      _selectedGender = value;
-                    });
-                  },
-                ),
+              CheckboxListTile(
+                title: Text('Masculino'),
+                value: _isMale,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _isMale = value ?? false;
+                    if (_isMale) {
+                      generoDefinido = Gender.masculino;
+                      _isFemale = false;
+                    }
+                  });
+                },
               ),
-              ListTile(
-                title: const Text('Female'),
-                leading: Radio<Gender>(
-                  value: Gender.female,
-                  groupValue: _selectedGender,
-                  onChanged: (Gender? value) {
-                    setState(() {
-                      _selectedGender = value;
-                    });
-                  },
-                ),
+              CheckboxListTile(
+                title: Text('Feminino'),
+                value: _isFemale,
+                onChanged: (bool? value) {
+                  setState(() {
+                    _isFemale = value ?? false;
+                    if (_isFemale) {
+                      generoDefinido = Gender.feminino;
+                      _isMale = false;
+                    }
+                  });
+                },
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
