@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:form_flutter/models/user_model.dart';
 
-class cardUser extends StatelessWidget {
-   cardUser({
+class CardUser extends StatelessWidget {
+  const CardUser({
     super.key,
     required this.users,
   });
@@ -13,53 +11,55 @@ class cardUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (users.isEmpty) {
+      return const Center(child: Text('No users available'));
+    }
+
+    final user = users[0]; 
+
     return Container(
       width: double.infinity,
+      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: const Color.fromARGB(255, 214, 212, 212),
       ),
       child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: 90.0,
-              height: 90.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: users[0].getGenderImage(),
-                ),
+          Container(
+            width: 90.0,
+            height: 90.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: user.getGenderImage(),
+                fit: BoxFit.cover,
               ),
             ),
           ),
-
+          const SizedBox(width: 16.0), 
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Email: ${users[0].email}',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    'Phone: ${users[0].phone}',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    'Address: ${users[0].adress}',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    'Gender: ${users[0].genero == Gender.masculino ? 'Masculino' : 'Feminino'}',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Email: ${user.email}',
+                  style: const TextStyle(color: Colors.black), 
+                ),
+                Text(
+                  'Phone: ${user.phone}',
+                  style: const TextStyle(color: Colors.black),
+                ),
+                Text(
+                  'Address: ${user.adress}', 
+                  style: const TextStyle(color: Colors.black),
+                ),
+                Text(
+                  'Gender: ${user.genero == Gender.male ? 'Male' : 'Female'}',
+                  style: const TextStyle(color: Colors.black),
+                ),
+              ],
             ),
           ),
         ],
